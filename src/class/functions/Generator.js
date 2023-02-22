@@ -34,6 +34,7 @@ export default class Generator {
         if(typeof(obj) !== 'object') throw new TypeError('O atributo a ser passado deve ser do tipo "object"')
         const { symbols, numbers, lethersLower, lethersUp, size } = obj
         if(typeof(size) !== 'number') throw new TypeError('O atributo a ser passado deve ser do  tipo "number"')
+        if(size < 8 || size > 25) throw new RangeError('O tamanho da senha está fora dos limites definidos')
         this.#size = size
         this.#listCond = [ symbols, numbers, lethersLower, lethersUp ]
         for (const key of this.#listCond) {
@@ -44,30 +45,28 @@ export default class Generator {
 
     #addition() {
         while(this.#key.length < this.#size) {
-            if(this.#conditions.symbols) this.#key.push(this.#symbols[this.#random(this.#symbols.length, 0)])
-            if(this.#conditions.numbers) this.#key.push(this.#num[this.#random(this.#num.length, 0)])
-            if(this.#conditions.lethersLower) this.#key.push(this.#letrasDown[this.#random(this.#letrasDown.length, 0)])
-            if(this.#conditions.lethersUp) this.#key.push(this.#letrasUp[this.#random(this.#letrasUp.length, 0)])
+            if(this.#conditions.symbols) { 
+                this.#key.push(this.#symbols[this.#random(this.#symbols.length, 0)])
+                if(this.#key.length === this.#size) break
+            }
+            if(this.#conditions.numbers) {
+                this.#key.push(this.#num[this.#random(this.#num.length, 0)])
+                if(this.#key.length === this.#size) break
+            }
+            if(this.#conditions.lethersLower) {
+                this.#key.push(this.#letrasDown[this.#random(this.#letrasDown.length, 0)])
+                if(this.#key.length === this.#size) break
+            }
+            if(this.#conditions.lethersUp) {
+                this.#key.push(this.#letrasUp[this.#random(this.#letrasUp.length, 0)])
+                if(this.#key.length === this.#size) break
+            }
         }
     }
 
     #creation() {
         this.#pass = ''
-
         this.#addition()
-
-        // Código não funcional para redução do tamanho da senha para o tamanho solicitado
-        /*
-        if(this.#key > this.#size) {
-            let i = this.#key - this.#size
-            let a = 1
-            while(i >= a) {
-                this.#key.pop()
-                a++
-            }
-        }
-        */
-
         this.#pass = this.#key.toString()
         this.#pass = this.#pass.replace(/,/g, '')
         if(this.#pass === '') throw new InternalError('Algo de errado não está certo')
@@ -75,7 +74,6 @@ export default class Generator {
 
     run() {
         this.#creation()
-        // console.log(this.#pass.length)
         return this.#pass
     }
 }
