@@ -1,12 +1,11 @@
 import express from 'express'
+import Codes from '../class/functions/Codes.js'
 
 const home = express()
-// status code ok
-const status = 200
 
-home.get('/', (req, res) => res.status(status).send({
-    situation: 'application ok',
-    status: status
+home.get('/', (req, res) => res.status(Codes.ok.code).send({
+    situation: Codes.ok.title,
+    status: Codes.ok.code
 }))
 
 export default home
