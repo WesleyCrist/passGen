@@ -6,7 +6,6 @@ const generate = express()
 
 generate.post('/', (req, res) => {
     const tmp = req.body
-    // res.send(tmp)
     try {
         const gen = new Generator(tmp)
         const reply = gen.run()

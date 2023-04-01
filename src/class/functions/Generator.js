@@ -1,3 +1,4 @@
+import Empty from "../error/Empty.js"
 import InternalError from "../error/InternalError.js"
 import Invalid from "../error/Invalid.js"
 export default class Generator {
@@ -33,8 +34,10 @@ export default class Generator {
 
     #verification(obj) {
         if(typeof(obj) !== 'object') throw new TypeError('O atributo a ser passado deve ser do tipo "object"')
+        if(Object.keys(obj).length === 0) throw new Empty('O objeto a ser passado não pode estar vazio')
         const { symbols, numbers, lethersLower, lethersUp, size } = obj
         if( !symbols && !numbers && !lethersLower && !lethersUp) throw new Invalid('para a geração da senha, algum dos atributos devem ser "true"')
+        if(typeof(size) === 'undefined') throw new Empty('Tamanho da senha requerido!')
         if(typeof(size) !== 'number') throw new TypeError('O atributo a ser passado deve ser do  tipo "number"')
         if(size < 8 || size > 25) throw new RangeError('O tamanho da senha está fora dos limites definidos')
         this.#size = size
