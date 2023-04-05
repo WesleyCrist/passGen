@@ -1,6 +1,7 @@
 import Empty from "../error/Empty.js"
 import InternalError from "../error/InternalError.js"
 import Invalid from "../error/Invalid.js"
+
 export default class Generator {
     
     #num = '0123456789'
@@ -18,21 +19,23 @@ export default class Generator {
     #pass = 'password'
     #key = []
     
-    constructor(obj) {
-        this.#verification(obj)
-    }
+    constructor(obj) { this.#verification(obj) }
 
-    #random(max, min) {
+    #random = (max, min) => {
         const r = Math.random() * (max - min) + min
+        if(Math.floor(r) < 10) return Number('0' + Math.floor(r).toString())
+        else return Number(Math.floor(r).toString())
+        /*
         if(Math.floor(r) < 10) {
             let modified = '0' + Math.floor(r).toString()
             return Number(modified)
         } else {
             return Number(Math.floor(r).toString())
         }
+        */
     }
 
-    #verification(obj) {
+    #verification = obj => {
         if(typeof(obj) !== 'object') throw new TypeError('O atributo a ser passado deve ser do tipo "object"')
         if(Object.keys(obj).length === 0) throw new Empty('O objeto a ser passado não pode estar vazio')
         const { symbols, numbers, lethersLower, lethersUp, size } = obj
@@ -48,7 +51,7 @@ export default class Generator {
         this.#conditions = { symbols, numbers, lethersLower, lethersUp }
     }
 
-    #addition() {
+    #addition = () => {
         while(this.#key.length < this.#size) {
             if(this.#conditions.symbols) { 
                 this.#key.push(this.#symbols[this.#random(this.#symbols.length, 0)])
@@ -69,15 +72,15 @@ export default class Generator {
         }
     }
 
-    #creation() {
+    #creation = () => {
         this.#pass = ''
         this.#addition()
         this.#pass = this.#key.toString()
         this.#pass = this.#pass.replace(/,/g, '')
-        if(this.#pass === '') throw new InternalError('Algo de errado não está certo')
+        if(this.#pass === '') throw new InternalError('something wrong is not right')
     }
 
-    run() {
+    run = () => {
         this.#creation()
         return this.#pass
     }
