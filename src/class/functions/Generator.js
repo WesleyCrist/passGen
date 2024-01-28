@@ -9,10 +9,10 @@ export default class Generator {
     #letrasDown = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     #symbols = '`[]{}():§&%$#@!-*-+;|?/'
     #conditions = {
-        symbols: false, // 1
-        numbers: false, // 2
-        lethersLower: false, // 3
-        lethersUp: false    // 4
+        symbols: false,         // 1
+        numbers: false,         // 2
+        lethersLower: false,    // 3
+        lethersUp: false        // 4
     }
     #listCond
     #size
@@ -25,14 +25,6 @@ export default class Generator {
         const r = Math.random() * (max - min) + min
         if(Math.floor(r) < 10) return Number('0' + Math.floor(r).toString())
         else return Number(Math.floor(r).toString())
-        /*
-        if(Math.floor(r) < 10) {
-            let modified = '0' + Math.floor(r).toString()
-            return Number(modified)
-        } else {
-            return Number(Math.floor(r).toString())
-        }
-        */
     }
 
     #verification = obj => {
@@ -45,9 +37,7 @@ export default class Generator {
         if(size < 8 || size > 25) throw new RangeError('O tamanho da senha está fora dos limites definidos')
         this.#size = size
         this.#listCond = [ symbols, numbers, lethersLower, lethersUp ]
-        for (const key of this.#listCond) {
-            if(typeof(key) !== 'boolean') throw new TypeError('O atributo a ser passado deve ser do tipo "boolean"')
-        }
+        for (const key of this.#listCond) if(typeof(key) !== 'boolean') throw new TypeError('O atributo a ser passado deve ser do tipo "boolean"')
         this.#conditions = { symbols, numbers, lethersLower, lethersUp }
     }
 

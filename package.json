@@ -2,10 +2,11 @@
   "name": "pass-gen",
   "version": "1.0.0",
   "description": "password generator",
+  "private": "true",
   "main": "src/main.js",
   "scripts": {
     "dev": "node --watch src/main.js",
-    "start": "node src/main.js"
+    "start": "node --env-file .env src/main.js"
   },
   "author": "WesleyCrist",
   "license": "ISC",
